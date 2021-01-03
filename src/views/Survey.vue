@@ -39,26 +39,23 @@ export default {
   data() {
     return {
       survey: new SurveyVue.Model(),
-      surveyName: "",
+      sid: "",
     };
   },
   mounted() {
     const setSurvey = (response) => {
       console.log(response);
-      this.surveyName = response.data.name;
-      this.survey = new SurveyVue.Model(response.data);
+      this.sid = response.data.sid;
+      this.survey = new SurveyVue.Model(response.data.survey);
       this.survey.onComplete.add(onSurveyComplete);
     };
     const onSurveyComplete = (sender, options) => {
       axios
-        .post(`${API_URL}/${this.surveyName}/post`, sender.data)
+        .post(`${API_URL}/${this.sid}/post`, sender.data)
         .then(setSurvey)
         .catch(console.log);
     };
-    axios
-      .get(`${API_URL}/${this.surveyName}`)
-      .then(setSurvey)
-      .catch(console.log);
+    axios.get(API_URL).then(setSurvey).catch(console.log);
   },
 };
 </script>
